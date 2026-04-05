@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Chinese Zodiac | Celestial Cycle Exploration</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700;900&amp;family=Newsreader:ital,wght@0,400;0,600;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#241a00",
+                        "on-surface": "#1b1d0e",
+                        "primary-container": "#8b0000",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f2f2d9",
+                        "on-secondary-container": "#745c00",
+                        "on-secondary-fixed-variant": "#574500",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fbfbe2",
+                        "secondary-fixed": "#ffe088",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-container": "#ff907f",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#b52619",
+                        "surface-bright": "#fbfbe2",
+                        "on-tertiary-container": "#b0aeae",
+                        "secondary": "#735c00",
+                        "surface-variant": "#e4e4cc",
+                        "on-primary-fixed": "#410000",
+                        "primary": "#610000",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#303221",
+                        "secondary-container": "#fed65b",
+                        "outline-variant": "#e3beb8",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#920703",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-container-high": "#eaead1",
+                        "tertiary": "#2c2c2c",
+                        "surface-container-highest": "#e4e4cc",
+                        "on-surface-variant": "#5a403c",
+                        "primary-fixed": "#ffdad4",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "outline": "#8e706b",
+                        "on-background": "#1b1d0e",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#efefd7",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#e4e2e1",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "tertiary-container": "#424242",
+                        "surface-container-low": "#f5f5dc",
+                        "surface-dim": "#dbdcc3",
+                        "background": "#fbfbe2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Noto Serif"],
+                        "body": ["Newsreader"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+        }
+
+        .brush-bg {
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDps0zmzCTSe48e7GWIFTCCXI49wJwad6EqrwdlDw3hwYF9Y9jTf7GDRx5iQoXDkANfk4Vl1Ja5ST0u8LTAqyVcIWZ1UK33ncVA2aESyfEZeLd1Z3ujeaQ-SFGyJa99-AqyfB75cApY3iMIRnvJA90JHwAZEZnKH094P0G0nTOpXFQoWuXaEaUBa5k7jmTZgIOIsing-GC-33PhBnnOwfT9NE4rF91emmGC_RPdmrXzI4W_UKWVA7Vk5J1hsljYF7BUlKmNtdeGQgo);
+            background-blend-mode: multiply
+        }
+
+        .moon-gate {
+            clip-path: circle(50% at 50% 50%)
+        }
+
+        .lacquer-btn {
+            background: linear-gradient(145deg, #8b0000, #610000)
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #fbfbe2
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #zodiac-result {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease, opacity 0.5s ease, margin 0.4s ease;
+        }
+
+        #zodiac-result.show {
+            max-height: 400px;
+            opacity: 1;
+            margin-top: 2rem;
+        }
+
+        .result-glow {
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.15), 0 0 80px rgba(212, 175, 55, 0.1);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0
+            }
+
+            100% {
+                background-position: 200% 0
+            }
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #610000 0%, #d4af37 50%, #610000 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .lacquer-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .lacquer-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-tertiary font-body selection:bg-secondary-container selection:text-on-secondary-container">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 bg-[#fbfbe2]/80 dark:bg-[#1a1a00]/80 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-8 py-6">
+            <div class="font-headline text-2xl font-bold text-[#8B0000] dark:text-[#ff4d4d] uppercase tracking-widest">
+                Chinese Zodiac
+            </div>
+            <div class="hidden md:flex items-center gap-10">
+                <a class="font-headline text-lg tracking-wide text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70 hover:opacity-100 hover:text-[#8B0000] transition-all duration-300"
+                    href="#finder">Zodiac Finder</a>
+                <a class="font-headline text-lg tracking-wide text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70 hover:opacity-100 hover:text-[#8B0000] transition-all duration-300"
+                    href="#archive">Imperial Archive</a>
+                <a class="font-headline text-lg tracking-wide text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70 hover:opacity-100 hover:text-[#8B0000] transition-all duration-300"
+                    href="#legacy">Cultural Legacy</a>
+            </div>
+
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center pt-24 overflow-hidden px-8">
+        <div class="absolute inset-0 z-0 opacity-10 grayscale mix-blend-multiply"
+            data-alt="Subtle chinese ink wash brush strokes across aged parchment texture background"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKllfNf-4JS1hR5XIko_mWyuuPCfwXXEf8d5VfJXmhxwN_1HdrcsCA9yXpk-5oLbWY7l5_Fsw5dZ2a9DPe1yORdjQAegJjR7MOiAHWPWqfdCqX3lQah6p_Xz-l49T4s3TKtN8a41kCG-To-TtrvaLRYGAH7z4haHjzBRGj-My4JNLHtcfR9E2uaYT04ejte94B6fgjyuuQN0fli5oHp09awW-dtleaKLU7GKOsdNLoHa8nkQmm_VCQMlkXD_HXxPz5pnUH4Ps60N8');">
+        </div>
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div class="space-y-8">
+                <div
+                    class="inline-block px-4 py-1 border-l-4 border-secondary text-secondary font-label text-sm tracking-[0.2em] uppercase">
+                    Since the Han Dynasty
+                </div>
+                <h1 class="font-headline text-6xl md:text-8xl font-black text-primary leading-tight">
+                    The Celestial <br />Cycle <span
+                        class="text-secondary opacity-50 block md:inline font-normal">十二生肖</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-on-surface-variant max-w-lg italic leading-relaxed">
+                    A digital chronicle of ancestral wisdom. Discover the ancient zodiac archetype woven into your
+                    modern existence.
+                </p>
+                <div class="pt-4">
+                    <a class="lacquer-btn px-10 py-5 text-on-primary font-headline text-lg tracking-widest shadow-xl hover:shadow-2xl transition-all duration-300 inline-block"
+                        href="#finder">
+                        ENTER YOUR BIRTH DATE
+                    </a>
+                </div>
+            </div>
+            <div class="relative hidden lg:block">
+                <div
+                    class="w-[500px] h-[500px] moon-gate bg-surface-container-high border-[16px] border-white/50 shadow-2xl relative overflow-hidden group">
+                    <img class="w-full h-full object-cover grayscale brightness-90 group-hover:scale-110 transition-transform duration-700"
+                        data-alt="Close-up of a detailed ancient stone carving of a Chinese dragon in warm natural light"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDNcF6vIqqcsfxKnJZeKlMt-yajaR2RumGdnFeEwprwkLenZZusj6QMy8jXbkMH4q_DoIcZFtAFeShchNxywbctWzPc9EYNHTIBkPW3xr0d2oPHEc8fqPUKTNetJQVVRS54qZujmO0LkWU4Ak-mBi0r44oQ7UVtuygbNWqjBSER7ly0dc_4YfGmEFohAJk2iNg4NYX7YF8IAobVOYYQgVqrw1SpVEqNkGBRAy1SUg9At-GJFQvn5Aah6G_qFFiq3PctdbaTSxKr3M" />
+                    <div class="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+                </div>
+                <div
+                    class="absolute -bottom-8 -left-8 w-48 h-48 rounded-full bg-secondary-fixed-dim/40 backdrop-blur-md flex items-center justify-center p-8 border border-white/20">
+                    <p
+                        class="font-headline text-center text-on-secondary-fixed text-sm font-bold uppercase tracking-tighter">
+                        The Gilded path of the soul</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Quick Finder Section -->
+    <section class="bg-surface-container-low py-24 px-8" id="finder">
+        <div class="max-w-3xl mx-auto text-center space-y-12">
+            <h2 class="font-headline text-4xl text-primary font-bold">Discover My Sign</h2>
+            <div
+                class="flex flex-col md:flex-row gap-6 items-end justify-center bg-surface p-12 shadow-sm rounded-none border-b-2 border-primary/10">
+                <div class="w-full text-left space-y-2">
+                    <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Year
+                        of Arrival</label>
+                    <input id="birth-year"
+                        class="w-full bg-transparent border-0 border-b border-outline-variant focus:border-secondary focus:ring-0 text-3xl font-headline text-primary p-2 placeholder:opacity-30"
+                        placeholder="YYYY" type="number" min="1900" max="2100" />
+                </div>
+                <div class="w-full text-left space-y-2">
+                    <label class="font-label text-xs uppercase tracking-widest text-on-surface-variant font-bold">Month
+                        of Birth</label>
+                    <select id="birth-month"
+                        class="w-full bg-transparent border-0 border-b border-outline-variant focus:border-secondary focus:ring-0 text-xl font-headline text-primary p-2">
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                </div>
+                <button id="reveal-btn" onclick="revealZodiac()"
+                    class="lacquer-btn whitespace-nowrap px-8 py-4 text-on-primary font-headline tracking-widest text-sm hover:opacity-90 transition-all">
+                    REVEAL DESTINY
+                </button>
+            </div>
+            <div id="zodiac-result" class="bg-surface p-10 border-b-4 border-secondary result-glow text-center">
+                <p class="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-2">Your Celestial
+                    Guardian</p>
+                <h3 id="result-char" class="font-headline text-7xl text-primary font-bold shimmer-text"></h3>
+                <h4 id="result-name" class="font-headline text-3xl font-black uppercase text-tertiary mt-2"></h4>
+                <p id="result-pinyin" class="font-label text-sm tracking-widest text-secondary font-bold mt-1"></p>
+                <p id="result-traits" class="font-body text-lg italic text-on-surface-variant mt-4"></p>
+                <p id="result-element"
+                    class="font-label text-xs uppercase tracking-widest text-on-surface-variant mt-4"></p>
+            </div>
+            <p class="font-body italic text-on-surface-variant opacity-60">Calculations based on the traditional Lunar
+                Calendar system.</p>
+        </div>
+    </section>
+    <!-- Zodiac Grid -->
+    <section id="archive" class="py-32 px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-baseline mb-24 gap-8">
+            <h3 class="font-headline text-5xl font-black text-primary">The Twelve Guardians</h3>
+            <p class="font-body text-xl max-w-md text-on-surface-variant italic">Every twelve years, the cycle renews,
+                imbuing each generation with unique celestial traits.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-20">
+            <!-- Rat -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Elegant close up of a field mouse in a field with soft bokeh and golden sunlight"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJwTfXIC9BbiuPIAcSR3j2BfCmlrXsf3JDgqoJlc8qHV98azQodMCq5ubqc_qGuwNslO9ijISCPyUXqLMxIP2xZoQyajO59itPEaRgotQs6xPzWlk4mrPPsSeL3opMswjpZ-c5Z__fj0tKHp8CMe34THKUq6BgwS0SxpT9BFBc2Lysy1YLOW1aEBRBkbYS2cMipNtuc3k2G31JP4tHL9PbPzA0TQOXJ2JXqVmlG4BXstLUMFfzGcZJRzve97RnUs3P4oo-plNRZA" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">鼠</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">SHǓ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Rat</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Quick-witted,
+                        resourceful, versatile and kind.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2020, 2008, 1996, 1984, 1972</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Ox -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A majestic ox standing in a misty meadow at dawn with dramatic lighting"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-UnP1gj6dwPDAzyUZi8-ko8IZNcKl7YWuifAN1pzE68r-tmVfEiF47aRUr09RXrEqXzE3qbRPswHnKzJd7FFqOQK8L8TT-YjkAPkO09p5dwhOs31ut0YU3cRTgB_UtxBJ-hkZUM3n5GkqHyPJGmYRfyhAe9EuZI90ZBoJ_c1R-p92g85eTsJmoaZYEDukb3-lV88U8ErWOOouO_ChB4FwQWGaYZQd6loifNw3SxneLMTzPe6LSorFHeu28gC6qNMocnjh0ytxHF4" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">牛</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">NIÚ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Ox</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Diligent, dependable,
+                        strong and determined.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2021, 2009, 1997, 1985, 1973</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Tiger -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Portrait of a majestic tiger with intense eyes in a dark moody jungle setting"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmhAnRsFevo6zMmOX_aGl8WbPiUxFz5ZhJlmEw_tO9eDqnzhjK5dg17rnoWNj1avj3VhDDpeHRu8_oxmOye-pXPopvIWGr5iUd_dZvQaqu9MO2K26Iwp291J3YxOVzZm_hl_qnSFScEMsDihgsTcKtZNucek_Sw0w_MTqAliBCxFjgfTueEOg5xIFZ6ETnDnkxy51grCXehF-rjtiQd0bgiCICt_VWfmy1dRjoN6C3FwjtOK9eUkODZhVSPOXZuFvG6d5ePL5WtbQ" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">虎</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">HǓ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Tiger</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Brave, confident,
+                        competitive and charming.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2022, 2010, 1998, 1986, 1974</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Rabbit -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Close up of a soft brown rabbit in morning dew among spring flowers"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD24nvzxNmPPRcRzKfvOyFmt152QbO6UP3gsO9OHxyuEOusUyt557MOWDsQN0GNpWLCMCdE8hMBeBLNLuuhw_exggjAqEwxYle7e32O62EIIKsnzmb481y-DDJTiVl0_v-ZsGyvcJU9mHDQTcBXAdVT2RVEZNG5P1W5XU0TX4WYeTaKALhVu1xUSvH4pnvqHd1neFWf5i0hmTYy_2Zf7xIX96NhIBqB8UQ3JR-EXJqynLXklRVmrneUasu3RQShM6CdQzcwuUGlOEI" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">兔</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">TÙ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Rabbit</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Quiet, elegant, kind and
+                        responsible.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2023, 2011, 1999, 1987, 1975</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Dragon -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Intricate golden dragon statue head against a deep red temple wall"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnXTERBD_UWX9htdINW2c9ukG37lDHpKUomX_LIDNaglFeUaMgP31nXvUcaDP1LPSBv_K9K16qbZedUdJI9X2a-bV2FfC1VdR-2NO0FZoW8o0qssuUsrDZFzcz1y334A8ExdutkQ-G6p3rGu027y1z1fnDhXIpVoD6fMueG-THmvKf9NC8x5UNcfiTWYelgRcthJvk5p0P7YlK0ewvjTDnTyr1xSxIf-mJbnw8nv2CtVRWTLHsrtSty9XZGaiexJYThIh6CXpSPl8" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">龙</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">LÓNG</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Dragon</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Confident, intelligent,
+                        enthusiastic and lucky.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2024, 2012, 2000, 1988, 1976</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Snake -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A slender emerald green snake coiled gracefully on a branch with soft sunlight filtering through leaves"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-bQTX2iLpTgXeiZ3hTsQkYc36WNmioqYzAIHfr-nh-rC6c4X2MZOtad1ADx-uk5SkH7J1uDncupVaWS9xhrXLHSE8H74jbg4iu6_l2V7fGiBaYr2VO5nXStxfoN5fRKP_1YDOd4F6MIj8DK3Ck8vtIPVDPnoWckHcwXA04v70whX6nigPbxt3vrHFT1J9sUoY54PNgf_eGRyuLkiH605-eTW_LxXhpnpyXwGptSlyqBJSNwhcAovMPVUHrZLK2tL2xGP1XggVWBY" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">蛇</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">SHÉ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Snake</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Enigmatic, intelligent,
+                        wise and intuitive.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2025, 2013, 2001, 1989, 1977</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Horse -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A wild horse galloping through a high mountain meadow at sunset"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjlpcpE7E2LhNOv663gAqn_gHpsvZvnQehDM47bc-nj2tBsZVeVf_Bnc6onis39qdJVq1rGc6IqMLlC_0BbQEdcksRi209z4eE-cMzPWdBhdSmx3HpYDA2-G0cR5YuyjgPx8HTPrgwvBar463NPWjBo2mktEimaam3hBOAHtx4fdIvv51V7F-a36xOg1kko3vjvz0IJQT7g7ZGbj2h_QViTSoEnbGwMwrkSASoUPIfq2yGqjNQ_c6nteGRn4VWA-xxrZmKAMFDlBw" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">马</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">MǍ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Horse</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Animated, active,
+                        energetic and optimistic.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2026, 2014, 2002, 1990, 1978</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Goat -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A serene goat with long horns in a rugged rocky mountain landscape with soft lighting"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOOUkxyjM4YXCArrygMNlKSbmfYitumlsysPBUtRizuNqL1R9L6XoRbeu3TipOxkqRgad5rQWmLd6vw5ju-8tIBDH0L-RG9QrwAXGi4kG_rJAKkxOUstZwoMhOoA9mZcWAlgfynntaWMmaqvS2MgEmjpSBkKofRd1lCfFd989ZLWoZLTUUQ7ITY0FfW34tTuUrbliCIae6rm20RS02-8ENc-uObeDRMJmsvfll2wGAeY8pnN_R-LcKSins3TY5716HgKl58Ynprl8" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">羊</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">YÁNG</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Goat</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Gentle, mild-mannered,
+                        shy and sympathetic.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2027, 2015, 2003, 1991, 1979</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Monkey -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A playful monkey peering through tropical leaves with curious eyes"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs1EOzUreE9V1xYK6jMJfIK15pQKN_HD8q3T5e-LNg8M-V9Funm20M8hjlZ12WbTBBdDjRaNcUTzrJPzEQMQIkpYk2I2qkAUQl1IxCC4aEPP3_49EJ0iLIl6udVBMkGNU6Gr9t9Gma4IE1qWxf45KXzhBiYbPxae1HNeydvuOCjVLCgKfImNHLzRc49bGnjv4c_nFCO4MrJhrLzIU7nYzaCwNhr8jOH-ebb1tIpPMQMXnGuKHoswpltiKr_F4nHvxSJh7163RXWVs" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">猴</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">HÓU</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Monkey</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Sharp, smart, curious
+                        and mischievous.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2028, 2016, 2004, 1992, 1980</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Rooster -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="Close-up of a vibrant rooster with iridescent feathers in early morning sunlight"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD2y2S9ZhhkS9xWnvX4LM4PGDBK43CUgZqER_4RZfXxOI_aCrL9E7_ZbPO_bXS1BhDhxlTwE-7_cf4_67WhbeVLTORkJBbvILpABQkoCOmfJxwvC-XowXfctj3V44HbAYun6kLZYkBCCGE6NabYLOmYSQcbd_4asJ0GVjWqH8zdIpRDoQikbjWidjl5k8nfSRuRoQn7e5_D5QxgWI0PtTS2qGCGbFF3lpSyLR4PrUjJye0rPzqXwIPOdFneCGJ4Uyqkqc18_82-ro" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">鸡</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">JĪ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Rooster</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Observant, hardworking,
+                        courageous and talented.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2029, 2017, 2005, 1993, 1981</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Dog -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A loyal golden retriever sitting calmly in a sunlit autumnal forest"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOV0kNR8H_EYGxpIBq1M_jTVXHPo5fT-WRkJ3uGmF9eiXOakn_8ABiJdF0VEB4SJX8BKOwDOszA7HiYRS7kKcTbr9DRZtg-ukeKupL_uybpz5TBPQil4gc8uGahMSx7fWBpLauj60w0YIYvSHok7PsDhzjXX1pxaECTtalE28alcw6pXQyUNVy76rgQuYyZmzUjw2-5b-YuVgLsCYR7M72uv0K2VVYQDIA-ODJXKiKb22YcnG1eV6wCZeQmKaxgjVCYSvvsCzATJU" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">狗</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">GǑU</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Dog</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Loyal, honest, kind and
+                        prudent.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2030, 2018, 2006, 1994, 1982</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pig -->
+            <div
+                class="bg-surface-container-highest p-8 group relative flex flex-col h-full hover:shadow-2xl transition-all duration-500">
+                <div
+                    class="absolute -top-10 -right-4 w-32 h-32 rounded-full overflow-hidden border-8 border-surface bg-white shadow-lg group-hover:scale-110 transition-transform">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A cute piglet foraging in a clover field with soft golden hour light"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnyjwCYj04ZluqmR0prCdmhDjprf5FSyhT8GC07Oxcka7bCLOPtrjNkWNXVlXGT6o_k39jSJ5ADizeWv4bKLyx7ZBVzLNMQxiiznEqges6KxV4oVDNqXfpWybbTnp4d25-zOs0kKMACCgMGgJlqRp-Gtl78YZVQe17nXY8irzJ_Gr17iz-_T0iSOpmm_TkNS5VZ4ZEXlQD7UVC6C3dqqq6pjM2L5VAyS_jIMB3strSjm4LOXeUr1Lz5De6WZKZUeQ3KwZDA0uX-bo" />
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="font-headline text-4xl text-primary font-bold">猪</span>
+                        <span class="font-label text-xs tracking-widest text-secondary font-bold">ZHŪ</span>
+                    </div>
+                    <h4 class="font-headline text-2xl font-black uppercase text-tertiary">Pig</h4>
+                    <p class="font-body text-lg italic text-on-surface-variant leading-relaxed">Compassionate, generous,
+                        diligent and brave.</p>
+                    <div class="pt-4 border-t border-primary/10">
+                        <p class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">
+                            Celestial Years</p>
+                        <p class="font-headline text-sm font-bold text-primary">2031, 2019, 2007, 1995, 1983</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Cultural Legacy Section -->
+    <section id="legacy" class="py-32 px-8 bg-surface-container-high relative overflow-hidden">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
+            <div class="w-full lg:w-1/2 space-y-10">
+                <h2 class="font-headline text-5xl font-black text-primary leading-tight">The Ancient Four Pillars
+                    <br /><span class="text-secondary italic">四柱命理</span>
+                </h2>
+                <div class="space-y-6">
+                    <p class="text-xl leading-relaxed text-on-surface-variant italic">The Chinese Zodiac is not merely
+                        about years. It is a complex metaphysical system known as the 'Ba Zi', where your birth hour,
+                        day, and month contribute to your elemental alignment.</p>
+                    <p class="text-lg leading-relaxed text-on-surface-variant">Each sign is also associated with one of
+                        the Five Elements: Wood, Fire, Earth, Metal, and Water. Together, they create a 60-year cycle of
+                        infinite variations.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-8 pt-8">
+                    <div class="space-y-2">
+                        <h5 class="font-label text-xs font-bold tracking-widest uppercase text-secondary">The Yin-Yang
+                        </h5>
+                        <p class="font-body italic opacity-70">Balance of forces</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h5 class="font-label text-xs font-bold tracking-widest uppercase text-secondary">The Wuxing
+                        </h5>
+                        <p class="font-body italic opacity-70">Interaction of elements</p>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full lg:w-1/2 relative">
+                <div class="aspect-square bg-surface shadow-2xl p-4 flex items-center justify-center relative">
+                    <img class="w-full h-full object-cover grayscale brightness-75"
+                        data-alt="Traditional Chinese calligraphy brush and ink pot on a textured paper surface with soft shadows"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuP-nBq-NUyG0CipzAMyFcwQExLlZW5BIaxvDyr8oqfTkSrEjYcrjUDHYLMHNtWMLLoMZxb4tGXIq9Bxn8Q0ybDtXuL646QbYsjSsxRswCZXpZhxT-xVaj6vHfaMZenAQegAfLx3e2wp6SiCpeEkoMojmJwdNx0WxYGRr_mn71MI353kF6KdwyM_jBaH3BUzWGs39S5qKR8w-bVntuWwJr-0oAkMDVRlXLo6PcNsS0JJ7t4ZUP9h8X6iBkvEy6pKDE2VaBUN5WNbw" />
+                    <div class="absolute inset-0 border-[24px] border-primary-container/10"></div>
+                </div>
+                <div
+                    class="absolute -top-12 -right-12 w-48 h-48 bg-primary text-on-primary flex flex-col items-center justify-center p-6 text-center">
+                    <span class="font-headline text-3xl font-bold">12</span>
+                    <span class="font-label text-[10px] uppercase tracking-widest">Signs of the eternal cycle</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="w-full border-t border-[#8B0000]/15 bg-[#fbfbe2] dark:bg-[#1a1a00]">
+        <div class="flex flex-col items-center gap-8 py-12 px-4 text-center">
+            <div class="font-headline font-black text-[#610000] dark:text-[#8B0000] text-3xl tracking-tighter">
+                CHINESE ZODIAC
+            </div>
+            <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+                <a class="font-newsreader italic text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-60 hover:text-[#D4AF37] transition-colors"
+                    href="#">The Four Pillars</a>
+                <a class="font-newsreader italic text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-60 hover:text-[#D4AF37] transition-colors"
+                    href="#">Lunar Calendar</a>
+                <a class="font-newsreader italic text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-60 hover:text-[#D4AF37] transition-colors"
+                    href="#">Ancestral Terms</a>
+            </div>
+            <div class="pt-4 border-t border-[#8B0000]/10 w-full max-w-md">
+                <p class="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-3 font-bold">Project
+                    Team</p>
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                    <span class="font-body text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70">Manan Garg
+                        (206)</span>
+                    <span class="font-body text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70">Tarandeep Singh
+                        (204)</span>
+                    <span class="font-body text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70">Varshini A
+                        (101)</span>
+                    <span class="font-body text-sm text-[#2c2c2c] dark:text-[#e0e0e0] opacity-70">Harshleen Kaur
+                        (108)</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        const zodiacData = [
+            { name: 'Rat', char: '鼠', pinyin: 'SHǓ', traits: 'Quick-witted, resourceful, versatile and kind.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Ox', char: '牛', pinyin: 'NIÚ', traits: 'Diligent, dependable, strong and determined.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Tiger', char: '虎', pinyin: 'HǓ', traits: 'Brave, confident, competitive and charming.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Rabbit', char: '兔', pinyin: 'TÙ', traits: 'Quiet, elegant, kind and responsible.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Dragon', char: '龙', pinyin: 'LÓNG', traits: 'Confident, intelligent, enthusiastic and lucky.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Snake', char: '蛇', pinyin: 'SHÉ', traits: 'Enigmatic, intelligent, wise and intuitive.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Horse', char: '马', pinyin: 'MǍ', traits: 'Animated, active, energetic and optimistic.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Goat', char: '羊', pinyin: 'YÁNG', traits: 'Gentle, mild-mannered, shy and sympathetic.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Monkey', char: '猴', pinyin: 'HÓU', traits: 'Sharp, smart, curious and mischievous.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Rooster', char: '鸡', pinyin: 'JĪ', traits: 'Observant, hardworking, courageous and talented.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Dog', char: '狗', pinyin: 'GǑU', traits: 'Loyal, honest, kind and prudent.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] },
+            { name: 'Pig', char: '猪', pinyin: 'ZHŪ', traits: 'Compassionate, generous, diligent and brave.', element: ['Metal', 'Water', 'Wood', 'Fire', 'Earth'] }
+        ];
+        const elementNames = ['Metal', 'Water', 'Wood', 'Fire', 'Earth'];
+        const elementEmoji = { 'Metal': '🪙 Metal', 'Water': '💧 Water', 'Wood': '🌳 Wood', 'Fire': '🔥 Fire', 'Earth': '🌍 Earth' };
+        function getZodiac(year) {
+            const month = parseInt(document.getElementById('birth-month').value);
+            let y = year;
+            if (month <= 1) y = year - 1;
+            const idx = ((y - 4) % 12 + 12) % 12;
+            const elIdx = ((y - 4) % 10 + 10) % 10;
+            const element = elementNames[Math.floor(elIdx / 2)];
+            return { ...zodiacData[idx], assignedElement: element };
+        }
+        function revealZodiac() {
+            const yearInput = document.getElementById('birth-year');
+            const year = parseInt(yearInput.value);
+            if (!year || year < 1900 || year > 2100) { yearInput.focus(); yearInput.classList.add('border-error'); setTimeout(() => yearInput.classList.remove('border-error'), 2000); return; }
+            const z = getZodiac(year);
+            document.getElementById('result-char').textContent = z.char;
+            document.getElementById('result-name').textContent = z.name;
+            document.getElementById('result-pinyin').textContent = z.pinyin;
+            document.getElementById('result-traits').textContent = z.traits;
+            document.getElementById('result-element').textContent = 'Element: ' + elementEmoji[z.assignedElement] + ' · ' + (year % 2 === 0 ? 'Yang ☀' : 'Yin ☾');
+            document.getElementById('zodiac-result').classList.add('show');
+        }
+        document.getElementById('birth-year').addEventListener('keydown', function (e) { if (e.key === 'Enter') revealZodiac(); });
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('section, header').forEach(el => { el.classList.add('fade-in'); observer.observe(el); });
+        // Nav active state on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            nav.style.boxShadow = window.scrollY > 50 ? '0 4px 30px rgba(0,0,0,0.08)' : 'none';
+        });
+    </script>
+</body>
+
+</html>
